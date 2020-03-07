@@ -38,4 +38,11 @@
 		<DebugSymbols>false</DebugSymbols>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <Reference Include="0Harmony">
+	    <HintPath>..\Libs\0Harmony.dll</HintPath>
+	    <Aliases>Harmony2</Aliases>
+	  </Reference>
+	</ItemGroup>
+
 </Project>
