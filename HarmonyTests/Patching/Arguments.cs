@@ -1,17 +1,17 @@
 using Harmony;
 using Harmony.ILCopying;
 using HarmonyTests.Assets;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace HarmonyTests
 {
-	[TestClass]
+	[TestFixture]
 	public class Arguments
 	{
-		[TestMethod]
+		[Test]
 		public void TestMethod6()
 		{
 			var originalClass = typeof(Class6);
@@ -49,7 +49,7 @@ namespace HarmonyTests
 			Assert.AreEqual(10.0, res.Item3.d1);
 		}
 
-		[TestMethod]
+		[Test]
 		public void TestMethod7()
 		{
 			var originalClass = typeof(Class7);
@@ -81,8 +81,8 @@ namespace HarmonyTests
 			var instance7 = new Class7();
 			var result = instance7.Method7();
 
-			Assert.AreEqual(1, result.a);
-			Assert.AreEqual(2, result.b);
+			Assert.AreEqual(1, result.a, "Result a");
+			Assert.AreEqual(2, result.b, "Result b");
 		}
 	}
 }

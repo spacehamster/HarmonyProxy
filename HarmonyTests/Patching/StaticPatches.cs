@@ -1,17 +1,17 @@
 using Harmony;
 using Harmony.ILCopying;
 using HarmonyTests.Assets;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 namespace HarmonyTests
 {
-	[TestClass]
+	[TestFixture]
 	public class StaticPatches
 	{
-		[TestMethod]
+		[Test]
 		public void TestMethod1()
 		{
 			var originalClass = typeof(Class1);
@@ -63,7 +63,7 @@ namespace HarmonyTests
 			Assert.IsTrue(Class1Patch.postfixed, "Postfix was not executed");
 		}
 
-		[TestMethod]
+		[Test]
 		public void TestMethod2()
 		{
 			var originalClass = typeof(Class2);
@@ -115,7 +115,7 @@ namespace HarmonyTests
 			Assert.IsTrue(Class1Patch.postfixed, "Postfix was not executed");
 		}
 
-		[TestMethod]
+		[Test]
 		public void TestMethod4()
 		{
 			var originalClass = typeof(Class4);
@@ -161,7 +161,7 @@ namespace HarmonyTests
 			Assert.AreEqual(Class4Patch.senderValue, "foo");
 		}
 
-		[TestMethod]
+		[Test]
 		public void TestMethod5()
 		{
 			var originalClass = typeof(Class5);

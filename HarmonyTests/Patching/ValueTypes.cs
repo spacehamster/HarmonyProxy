@@ -1,5 +1,5 @@
 using Harmony;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 
 namespace HarmonyTests
 {
@@ -34,10 +34,10 @@ namespace HarmonyTests
 		}
 	}
 
-	[TestClass]
+	[TestFixture]
 	public class ValueTypes
 	{
-		[TestMethod]
+		[Test]
 		public void ValueTypeInstance()
 		{
 			var originalClass = typeof(Something);

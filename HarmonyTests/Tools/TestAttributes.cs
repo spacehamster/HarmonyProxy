@@ -1,14 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Harmony;
 using HarmonyTests.Assets;
 using System.Linq;
 
 namespace HarmonyTests.Tools
 {
-	[TestClass]
+	[TestFixture]
 	public class Test_Attributes
 	{
-		[TestMethod]
+		[Test]
 		public void TestAttributes()
 		{
 			var type = typeof(AllAttributesClass);
