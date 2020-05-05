@@ -37,7 +37,8 @@ namespace ConsoleTestRunner
 			}
 			else
 			{
-				Assert.True(result.ExitCode == 0, $"Version {Environment.Version}\n" + result.StdOut);
+				var version = Util.GetFrameworkVersion(Assembly.GetExecutingAssembly());
+				Assert.True(result.ExitCode == 0, $"Version {version}\n" + result.StdOut);
 			}
 		}
 	}

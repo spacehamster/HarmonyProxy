@@ -52,9 +52,9 @@ namespace HarmonyTests
 			{
 				var patchedCode = *(byte*)originalMethodStartPre;
 				if (IntPtr.Size == sizeof(long))
-					Assert.IsTrue(patchedCode == 0x48);
+					Assert.IsTrue(patchedCode == 0x48, $"Patched code is wrong size {patchedCode}");
 				else
-					Assert.IsTrue(patchedCode == 0x68);
+					Assert.IsTrue(patchedCode == 0x68, $"Patched code is wrong size {patchedCode}");
 			}
 
 			Class1.Method1();
@@ -104,9 +104,9 @@ namespace HarmonyTests
 			{
 				var patchedCode = *(byte*)originalMethodStartPre;
 				if (IntPtr.Size == sizeof(long))
-					Assert.IsTrue(patchedCode == 0x48);
+					Assert.IsTrue(patchedCode == 0x48, $"Patched code is wrong size {patchedCode}");
 				else
-					Assert.IsTrue(patchedCode == 0x68);
+					Assert.IsTrue(patchedCode == 0x68, $"Patched code is wrong size {patchedCode}");
 			}
 
 			new Class2().Method2();
@@ -153,9 +153,9 @@ namespace HarmonyTests
 			{
 				var patchedCode = *(byte*)originalMethodStartPre;
 				if (IntPtr.Size == sizeof(long))
-					Assert.IsTrue(patchedCode == 0x48);
+					Assert.IsTrue(patchedCode == 0x48, $"Patched code is wrong size {patchedCode}");
 				else
-					Assert.IsTrue(patchedCode == 0x68);
+					Assert.IsTrue(patchedCode == 0x68, $"Patched code is wrong size {patchedCode}");
 			}
 
 			(new Class4()).Method4("foo");
@@ -163,7 +163,6 @@ namespace HarmonyTests
 			Assert.IsTrue(Class4Patch.originalExecuted, "Original was not executed");
 			Assert.AreEqual(Class4Patch.senderValue, "foo");
 		}
-
 		[Test]
 		public void TestMethod5()
 		{

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net35;net45;net472</TargetFrameworks>
@@ -12,7 +12,7 @@
 		<Description>A general non-destructive patch library for .NET and Mono modules</Description>
 		<PackageId>Lib.Harmony</PackageId>
 		<Authors>Andreas Pardeike</Authors>
-		<AssemblyName>0Harmony</AssemblyName>
+		<AssemblyName>0Harmony12</AssemblyName>
 		<SignAssembly>false</SignAssembly>
 		<Version>1.2.0.1</Version>
 		<PackageLicenseUrl>https://raw.githubusercontent.com/pardeike/Harmony/master/LICENSE</PackageLicenseUrl>
@@ -41,7 +41,7 @@
 	<ItemGroup>
 	  <Reference Include="0Harmony">
 	    <HintPath>..\Libs\0Harmony.dll</HintPath>
-	    <Aliases>Harmony2</Aliases>
+	    <Aliases>Harmony20</Aliases>
 	  </Reference>
 	</ItemGroup>
 

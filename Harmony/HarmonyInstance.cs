@@ -1,4 +1,4 @@
-using Harmony.Tools;
+extern alias Harmony20;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -46,11 +46,13 @@ namespace Harmony
 		public static bool DEBUG = false;
 
 		private static bool selfPatchingDone = false;
-
+		internal Harmony20.HarmonyLib.Harmony instance;
 		HarmonyInstance(string id)
 		{
+			instance = new Harmony20.HarmonyLib.Harmony(id);
 			if (DEBUG)
 			{
+				Harmony20.HarmonyLib.Harmony.DEBUG = true;
 				var assembly = typeof(HarmonyInstance).Assembly;
 				var version = assembly.GetName().Version;
 				var location = assembly.Location;
@@ -65,12 +67,6 @@ namespace Harmony
 			}
 
 			this.id = id;
-
-			if (!selfPatchingDone)
-			{
-				selfPatchingDone = true;
-				SelfPatching.PatchOldHarmonyMethods();
-			}
 		}
 
 		public static HarmonyInstance Create(string id)
@@ -162,29 +158,13 @@ namespace Harmony
 
 		public IEnumerable<MethodBase> GetPatchedMethods()
 		{
-			return HarmonySharedState.GetPatchedMethods();
+			return instance.GetPatchedMethods();
 		}
+
 
 		public Dictionary<string, Version> VersionInfo(out Version currentVersion)
 		{
-			currentVersion = typeof(HarmonyInstance).Assembly.GetName().Version;
-			var assemblies = new Dictionary<string, Assembly>();
-			GetPatchedMethods().Do(method =>
-			{
-				var info = HarmonySharedState.GetPatchInfo(method);
-				info.prefixes.Do(fix => assemblies[fix.owner] = fix.patch.DeclaringType.Assembly);
-				info.postfixes.Do(fix => assemblies[fix.owner] = fix.patch.DeclaringType.Assembly);
-				info.transpilers.Do(fix => assemblies[fix.owner] = fix.patch.DeclaringType.Assembly);
-			});
-
-			var result = new Dictionary<string, Version>();
-			assemblies.Do(info =>
-			{
-				var assemblyName = info.Value.GetReferencedAssemblies().FirstOrDefault(a => a.FullName.StartsWith("0Harmony, Version"));
-				if (assemblyName != null)
-					result[info.Key] = assemblyName.Version;
-			});
-			return result;
+			return Harmony20.HarmonyLib.Harmony.VersionInfo(out currentVersion);
 		}
 	}
 }

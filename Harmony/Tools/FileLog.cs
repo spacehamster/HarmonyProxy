@@ -18,7 +18,7 @@ namespace Harmony
 		[UpgradeToLatestVersion(1)]
 		static FileLog()
 		{
-			logPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + Path.DirectorySeparatorChar + "harmony.log.txt";
+			logPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + Path.DirectorySeparatorChar + "harmonyproxy.log.txt";
 		}
 
 		static string IndentString()

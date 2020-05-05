@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -9,6 +10,20 @@ namespace ConsoleTestRunner
 {
 	static class Util
 	{
+		public static string GetFrameworkVersion(this Assembly assembly)
+		{
+			var targetFrameAttribute = assembly.GetCustomAttributes(true)
+				.FirstOrDefault(a => a.GetType().Name == "TargetFrameworkAttribute");
+			if (targetFrameAttribute == null)
+			{
+				return ".NET 2, 3 or 3.5";
+			}
+			var result = (string)targetFrameAttribute.GetType()
+				.GetProperty("FrameworkDisplayName")
+				.GetValue(targetFrameAttribute, new object[0]);
+			return result.Replace(".NET Framework", ".NET");
+		}
+
 		public static bool ExistsOnPath(string fileName)
 		{
 			return GetFullPath(fileName) != null;

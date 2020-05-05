@@ -1,3 +1,4 @@
+extern alias Harmony20;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Harmony
 	public class PatchProcessor
 	{
 		static object locker = new object();
-
+		List<Harmony20.HarmonyLib.PatchProcessor> patchProcessors;
 		readonly HarmonyInstance instance;
 
 		readonly Type container;
@@ -19,7 +20,6 @@ namespace Harmony
 		HarmonyMethod prefix;
 		HarmonyMethod postfix;
 		HarmonyMethod transpiler;
-
 		public PatchProcessor(HarmonyInstance instance, Type type, HarmonyMethod attributes)
 		{
 			this.instance = instance;
@@ -29,12 +29,28 @@ namespace Harmony
 			postfix = containerAttributes.Clone();
 			transpiler = containerAttributes.Clone();
 			PrepareType();
+			patchProcessors = new List<Harmony20.HarmonyLib.PatchProcessor>();
+			foreach(var method in originals)
+			{
+				patchProcessors.Add(new Harmony20.HarmonyLib.PatchProcessor(instance.instance, method));
+			}
+			if (prefix?.method != null) patchProcessors.Do(p => p.AddPrefix(prefix.method));
+			if (postfix?.method != null) patchProcessors.Do(p => p.AddPostfix(postfix.method));
+			if (transpiler?.method != null) patchProcessors.Do(p => p.AddTranspiler(transpiler.method));
 		}
 
 		public PatchProcessor(HarmonyInstance instance, List<MethodBase> originals, HarmonyMethod prefix = null, HarmonyMethod postfix = null, HarmonyMethod transpiler = null)
 		{
+			patchProcessors = new List<Harmony20.HarmonyLib.PatchProcessor>();
+			foreach (var method in originals)
+			{
+				patchProcessors.Add(new Harmony20.HarmonyLib.PatchProcessor(instance.instance, method));
+			}
 			this.instance = instance;
 			this.originals = originals;
+			if (prefix?.method != null) patchProcessors.Do(p => p.AddPrefix(prefix.method));
+			if (postfix?.method != null) patchProcessors.Do(p => p.AddPostfix(postfix.method));
+			if (transpiler?.method != null) patchProcessors.Do(p => p.AddTranspiler(transpiler.method));
 			this.prefix = prefix ?? new HarmonyMethod(null);
 			this.postfix = postfix ?? new HarmonyMethod(null);
 			this.transpiler = transpiler ?? new HarmonyMethod(null);
@@ -42,89 +58,41 @@ namespace Harmony
 
 		public static Patches GetPatchInfo(MethodBase method)
 		{
-			lock (locker)
-			{
-				var patchInfo = HarmonySharedState.GetPatchInfo(method);
-				if (patchInfo == null) return null;
-				return new Patches(patchInfo.prefixes, patchInfo.postfixes, patchInfo.transpilers);
-			}
+			return Harmony20.HarmonyLib.PatchProcessor.GetPatchInfo(method).ToHarmony12();
 		}
 
 		public static IEnumerable<MethodBase> AllPatchedMethods()
 		{
-			lock (locker)
-			{
-				return HarmonySharedState.GetPatchedMethods();
-			}
+			return Harmony20.HarmonyLib.PatchProcessor.GetAllPatchedMethods();
 		}
 
 		public List<DynamicMethod> Patch()
 		{
-			lock (locker)
+			//TODO: What happens if patch doesn't return a dynamic method?
+			var result = new List<DynamicMethod>();
+			foreach (var pp in patchProcessors)
 			{
-				var dynamicMethods = new List<DynamicMethod>();
-				foreach (var original in originals)
+				var info = pp.Patch();
+				if (info is DynamicMethod dm)
 				{
-					if (original == null)
-						throw new NullReferenceException("original");
-
-					var individualPrepareResult = RunMethod<HarmonyPrepare, bool>(true, original);
-					if (individualPrepareResult)
-					{
-						var patchInfo = HarmonySharedState.GetPatchInfo(original);
-						if (patchInfo == null) patchInfo = new PatchInfo();
-
-						PatchFunctions.AddPrefix(patchInfo, instance.Id, prefix);
-						PatchFunctions.AddPostfix(patchInfo, instance.Id, postfix);
-						PatchFunctions.AddTranspiler(patchInfo, instance.Id, transpiler);
-						dynamicMethods.Add(PatchFunctions.UpdateWrapper(original, patchInfo, instance.Id));
-
-						HarmonySharedState.UpdatePatchInfo(original, patchInfo);
-
-						RunMethod<HarmonyCleanup>(original);
-					}
+					result.Add(dm);
 				}
-				return dynamicMethods;
+				else
+				{
+					throw new Exception($"Invalid return type {info}");
+				}
 			}
+			return result;
 		}
 
 		public void Unpatch(HarmonyPatchType type, string harmonyID)
 		{
-			lock (locker)
-			{
-				foreach (var original in originals)
-				{
-					var patchInfo = HarmonySharedState.GetPatchInfo(original);
-					if (patchInfo == null) patchInfo = new PatchInfo();
-
-					if (type == HarmonyPatchType.All || type == HarmonyPatchType.Prefix)
-						PatchFunctions.RemovePrefix(patchInfo, harmonyID);
-					if (type == HarmonyPatchType.All || type == HarmonyPatchType.Postfix)
-						PatchFunctions.RemovePostfix(patchInfo, harmonyID);
-					if (type == HarmonyPatchType.All || type == HarmonyPatchType.Transpiler)
-						PatchFunctions.RemoveTranspiler(patchInfo, harmonyID);
-					PatchFunctions.UpdateWrapper(original, patchInfo, instance.Id);
-
-					HarmonySharedState.UpdatePatchInfo(original, patchInfo);
-				}
-			}
+			patchProcessors.Do(p => p.Unpatch(type.ToHarmony20(), harmonyID));
 		}
 
 		public void Unpatch(MethodInfo patch)
 		{
-			lock (locker)
-			{
-				foreach (var original in originals)
-				{
-					var patchInfo = HarmonySharedState.GetPatchInfo(original);
-					if (patchInfo == null) patchInfo = new PatchInfo();
-
-					PatchFunctions.RemovePatch(patchInfo, patch);
-					PatchFunctions.UpdateWrapper(original, patchInfo, instance.Id);
-
-					HarmonySharedState.UpdatePatchInfo(original, patchInfo);
-				}
-			}
+			patchProcessors.Do(p => p.Unpatch(patch));
 		}
 
 		void PrepareType()
