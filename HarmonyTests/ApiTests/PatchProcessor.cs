@@ -1,5 +1,4 @@
-﻿
-using Harmony;
+﻿using Harmony;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Reflection;
@@ -9,17 +8,17 @@ namespace HarmonyTests.ApiTests
 	[TestFixture]
 	class PatchProcessorTests
 	{
-		public int TestA()
+		public string TestA()
 		{
-			return 0;
+			return MethodBase.GetCurrentMethod().Name;
 		}
-		public int TestB()
+		public string TestB()
 		{
-			return 0;
+			return MethodBase.GetCurrentMethod().Name;
 		}
-		static void Postfix(ref int __result)
+		public static void Postfix(ref string __result)
 		{
-			__result = 1;
+			__result = "Patched";
 		}
 		[Test]
 		public void TestMultiple()
@@ -33,9 +32,8 @@ namespace HarmonyTests.ApiTests
 			var harmony = HarmonyInstance.Create("test");
 			var processor = new Harmony.PatchProcessor(harmony, targetMethods, postfix: postfix);
 			processor.Patch();
-			Assert.AreEqual(1, TestA(), "Test A");
-			Assert.AreEqual(1, TestB(), "Test B");
-
+			Assert.AreEqual("Patched", TestA(), "Test A");
+			Assert.AreEqual("Patched", TestB(), "Test B");
 		}
 	}
 }
