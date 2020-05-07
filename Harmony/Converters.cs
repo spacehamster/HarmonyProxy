@@ -18,6 +18,15 @@ namespace Harmony
 			return new Patch(patch.PatchMethod, patch.index, patch.owner, 
 				patch.priority, patch.before, patch.after);
 		}
+		internal static Harmony20.HarmonyLib.HarmonyMethod ToHarmony20(this HarmonyMethod method)
+		{
+			return new Harmony20.HarmonyLib.HarmonyMethod(method.method)
+			{
+				priority = method.prioritiy,
+				before = method.before,
+				after = method.after
+			};
+		}
 		internal static Harmony20.HarmonyLib.CodeInstruction ToHarmony20CodeInstruction(this CodeInstruction codeInstruction)
 		{
 			var result = new Harmony20.HarmonyLib.CodeInstruction(codeInstruction.opcode, codeInstruction.operand)

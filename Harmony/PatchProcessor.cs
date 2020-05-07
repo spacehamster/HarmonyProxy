@@ -34,9 +34,9 @@ namespace Harmony
 			{
 				patchProcessors.Add(new Harmony20.HarmonyLib.PatchProcessor(instance.instance, method));
 			}
-			if (prefix?.method != null) patchProcessors.Do(p => p.AddPrefix(prefix.method));
-			if (postfix?.method != null) patchProcessors.Do(p => p.AddPostfix(postfix.method));
-			if (transpiler?.method != null) patchProcessors.Do(p => p.AddTranspiler(transpiler.method));
+			if (prefix?.method != null) patchProcessors.Do(p => p.AddPrefix(prefix.ToHarmony20()));
+			if (postfix?.method != null) patchProcessors.Do(p => p.AddPostfix(postfix.ToHarmony20()));
+			if (transpiler?.method != null) patchProcessors.Do(p => p.AddTranspiler(transpiler.ToHarmony20()));
 		}
 
 		public PatchProcessor(HarmonyInstance instance, List<MethodBase> originals, HarmonyMethod prefix = null, HarmonyMethod postfix = null, HarmonyMethod transpiler = null)
@@ -48,9 +48,9 @@ namespace Harmony
 			}
 			this.instance = instance;
 			this.originals = originals;
-			if (prefix?.method != null) patchProcessors.Do(p => p.AddPrefix(prefix.method));
-			if (postfix?.method != null) patchProcessors.Do(p => p.AddPostfix(postfix.method));
-			if (transpiler?.method != null) patchProcessors.Do(p => p.AddTranspiler(transpiler.method));
+			if (prefix?.method != null) patchProcessors.Do(p => p.AddPrefix(prefix.ToHarmony20()));
+			if (postfix?.method != null) patchProcessors.Do(p => p.AddPostfix(postfix.ToHarmony20()));
+			if (transpiler?.method != null) patchProcessors.Do(p => p.AddTranspiler(transpiler.ToHarmony20()));
 			this.prefix = prefix ?? new HarmonyMethod(null);
 			this.postfix = postfix ?? new HarmonyMethod(null);
 			this.transpiler = transpiler ?? new HarmonyMethod(null);
