@@ -48,14 +48,6 @@ namespace HarmonyTests
 			patcher.Patch();
 			var originalMethodStartPost = Memory.GetMethodStart(originalMethod, out exception);
 			Assert.AreEqual(originalMethodStartPre, originalMethodStartPost);
-			unsafe
-			{
-				var patchedCode = *(byte*)originalMethodStartPre;
-				if (IntPtr.Size == sizeof(long))
-					Assert.IsTrue(patchedCode == 0x48, $"Patched code is wrong size {patchedCode}");
-				else
-					Assert.IsTrue(patchedCode == 0x68, $"Patched code is wrong size {patchedCode}");
-			}
 
 			Class1.Method1();
 			Assert.IsTrue(Class1Patch.prefixed, "Prefix was not executed");
@@ -100,14 +92,6 @@ namespace HarmonyTests
 			patcher.Patch();
 			var originalMethodStartPost = Memory.GetMethodStart(originalMethod, out exception);
 			Assert.AreEqual(originalMethodStartPre, originalMethodStartPost);
-			unsafe
-			{
-				var patchedCode = *(byte*)originalMethodStartPre;
-				if (IntPtr.Size == sizeof(long))
-					Assert.IsTrue(patchedCode == 0x48, $"Patched code is wrong size {patchedCode}");
-				else
-					Assert.IsTrue(patchedCode == 0x68, $"Patched code is wrong size {patchedCode}");
-			}
 
 			new Class2().Method2();
 			Warn.If(Class1Patch.prefixed != true, "Prefix was not executed");
@@ -149,14 +133,6 @@ namespace HarmonyTests
 			patcher.Patch();
 			var originalMethodStartPost = Memory.GetMethodStart(originalMethod, out exception);
 			Assert.AreEqual(originalMethodStartPre, originalMethodStartPost);
-			unsafe
-			{
-				var patchedCode = *(byte*)originalMethodStartPre;
-				if (IntPtr.Size == sizeof(long))
-					Assert.IsTrue(patchedCode == 0x48, $"Patched code is wrong size {patchedCode}");
-				else
-					Assert.IsTrue(patchedCode == 0x68, $"Patched code is wrong size {patchedCode}");
-			}
 
 			(new Class4()).Method4("foo");
 			Assert.IsTrue(Class4Patch.prefixed, "Prefix was not executed");
