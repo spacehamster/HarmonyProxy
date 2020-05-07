@@ -24,7 +24,16 @@ namespace Harmony
 			{
 				labels = codeInstruction.labels
 			};
+			foreach(var block in codeInstruction.blocks)
+			{
+				result.blocks.Add(block.ToHarmony20());
+			}
 			return result;
+		}
+		internal static Harmony20.HarmonyLib.ExceptionBlock ToHarmony20(this Harmony.ILCopying.ExceptionBlock block)
+		{
+			var blockType = (Harmony20.HarmonyLib.ExceptionBlockType)block.blockType;
+			return new Harmony20.HarmonyLib.ExceptionBlock(blockType, block.catchType);
 		}
 		internal static Harmony20.HarmonyLib.HarmonyPatchType ToHarmony20(this HarmonyPatchType type)
 		{

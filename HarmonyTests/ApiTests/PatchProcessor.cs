@@ -33,8 +33,8 @@ namespace HarmonyTests.ApiTests
 			var harmony = HarmonyInstance.Create("test");
 			var processor = new Harmony.PatchProcessor(harmony, targetMethods, postfix: postfix);
 			processor.Patch();
-			Assert.AreEqual(1, TestA());
-			Assert.AreEqual(1, TestB());
+			Assert.AreEqual(1, TestA(), "Test A");
+			Assert.AreEqual(1, TestB(), "Test B");
 
 		}
 	}
