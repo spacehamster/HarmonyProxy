@@ -1,4 +1,3 @@
-extern alias Harmony20;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -46,13 +45,13 @@ namespace Harmony
 		public static bool DEBUG = false;
 
 		private static bool selfPatchingDone = false;
-		internal Harmony20.HarmonyLib.Harmony instance;
+		internal HarmonyLib.Harmony instance;
 		HarmonyInstance(string id)
 		{
-			instance = new Harmony20.HarmonyLib.Harmony(id);
+			instance = new HarmonyLib.Harmony(id);
 			if (DEBUG)
 			{
-				Harmony20.HarmonyLib.Harmony.DEBUG = true;
+				HarmonyLib.Harmony.DEBUG = true;
 				var assembly = typeof(HarmonyInstance).Assembly;
 				var version = assembly.GetName().Version;
 				var location = assembly.Location;
@@ -164,7 +163,7 @@ namespace Harmony
 
 		public Dictionary<string, Version> VersionInfo(out Version currentVersion)
 		{
-			return Harmony20.HarmonyLib.Harmony.VersionInfo(out currentVersion);
+			return HarmonyLib.Harmony.VersionInfo(out currentVersion);
 		}
 	}
 }

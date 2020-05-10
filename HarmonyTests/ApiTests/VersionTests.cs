@@ -12,7 +12,8 @@ namespace HarmonyTests.ApiTests
 		{
 			var harmony = HarmonyInstance.Create("test");
 			var version = harmony.VersionInfo(out System.Version currentVersion);
-			Assert.AreEqual(currentVersion.ToString(), "2.0.0.8");
+			Assert.AreEqual(currentVersion.Major, 2);
+			Assert.AreEqual(currentVersion.Minor, 0);
 			Assert.AreEqual(version.Count, 0);
 		}
 	}

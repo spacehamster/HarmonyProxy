@@ -1,4 +1,3 @@
-extern alias Harmony20;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +9,7 @@ namespace Harmony
 	public class PatchProcessor
 	{
 		static object locker = new object();
-		List<Harmony20.HarmonyLib.PatchProcessor> patchProcessors;
+		List<HarmonyLib.PatchProcessor> patchProcessors;
 		readonly HarmonyInstance instance;
 
 		readonly Type container;
@@ -29,10 +28,10 @@ namespace Harmony
 			postfix = containerAttributes.Clone();
 			transpiler = containerAttributes.Clone();
 			PrepareType();
-			patchProcessors = new List<Harmony20.HarmonyLib.PatchProcessor>();
+			patchProcessors = new List<HarmonyLib.PatchProcessor>();
 			foreach(var method in originals)
 			{
-				patchProcessors.Add(new Harmony20.HarmonyLib.PatchProcessor(instance.instance, method));
+				patchProcessors.Add(new HarmonyLib.PatchProcessor(instance.instance, method));
 			}
 			if (prefix?.method != null) patchProcessors.Do(p => p.AddPrefix(prefix.ToHarmony20()));
 			if (postfix?.method != null) patchProcessors.Do(p => p.AddPostfix(postfix.ToHarmony20()));
@@ -41,10 +40,10 @@ namespace Harmony
 
 		public PatchProcessor(HarmonyInstance instance, List<MethodBase> originals, HarmonyMethod prefix = null, HarmonyMethod postfix = null, HarmonyMethod transpiler = null)
 		{
-			patchProcessors = new List<Harmony20.HarmonyLib.PatchProcessor>();
+			patchProcessors = new List<HarmonyLib.PatchProcessor>();
 			foreach (var method in originals)
 			{
-				patchProcessors.Add(new Harmony20.HarmonyLib.PatchProcessor(instance.instance, method));
+				patchProcessors.Add(new HarmonyLib.PatchProcessor(instance.instance, method));
 			}
 			this.instance = instance;
 			this.originals = originals;
@@ -58,12 +57,12 @@ namespace Harmony
 
 		public static Patches GetPatchInfo(MethodBase method)
 		{
-			return Harmony20.HarmonyLib.PatchProcessor.GetPatchInfo(method).ToHarmony12();
+			return HarmonyLib.PatchProcessor.GetPatchInfo(method).ToHarmony12();
 		}
 
 		public static IEnumerable<MethodBase> AllPatchedMethods()
 		{
-			return Harmony20.HarmonyLib.PatchProcessor.GetAllPatchedMethods();
+			return HarmonyLib.PatchProcessor.GetAllPatchedMethods();
 		}
 
 		public List<DynamicMethod> Patch()

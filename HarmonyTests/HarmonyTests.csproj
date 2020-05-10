@@ -22,7 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Harmony\Harmony.csproj" />
+	  <ProjectReference Include="..\Harmony\HarmonyProxy.csproj" />
 	</ItemGroup>
 
 </Project>

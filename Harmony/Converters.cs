@@ -1,35 +1,33 @@
-﻿extern alias Harmony20;
-
-using System.Linq;
+﻿using System.Linq;
 
 namespace Harmony
 {
 	internal static class Converters
 	{
-		internal static Patches ToHarmony12(this Harmony20.HarmonyLib.Patches patches)
+		internal static Patches ToHarmony12(this HarmonyLib.Patches patches)
 		{
 			var postfixes = patches.Postfixes.Select(p => p.ToHarmony12());
 			var prefixes = patches.Prefixes.Select(p => p.ToHarmony12());
 			var transpilers = patches.Transpilers.Select(p => p.ToHarmony12());
 			return new Patches(postfixes.ToArray(), prefixes.ToArray(), transpilers.ToArray());
 		}
-		internal static Patch ToHarmony12(this Harmony20.HarmonyLib.Patch patch)
+		internal static Patch ToHarmony12(this HarmonyLib.Patch patch)
 		{
 			return new Patch(patch.PatchMethod, patch.index, patch.owner, 
 				patch.priority, patch.before, patch.after);
 		}
-		internal static Harmony20.HarmonyLib.HarmonyMethod ToHarmony20(this HarmonyMethod method)
+		internal static HarmonyLib.HarmonyMethod ToHarmony20(this HarmonyMethod method)
 		{
-			return new Harmony20.HarmonyLib.HarmonyMethod(method.method)
+			return new HarmonyLib.HarmonyMethod(method.method)
 			{
 				priority = method.prioritiy,
 				before = method.before,
 				after = method.after
 			};
 		}
-		internal static Harmony20.HarmonyLib.CodeInstruction ToHarmony20CodeInstruction(this CodeInstruction codeInstruction)
+		internal static HarmonyLib.CodeInstruction ToHarmony20CodeInstruction(this CodeInstruction codeInstruction)
 		{
-			var result = new Harmony20.HarmonyLib.CodeInstruction(codeInstruction.opcode, codeInstruction.operand)
+			var result = new HarmonyLib.CodeInstruction(codeInstruction.opcode, codeInstruction.operand)
 			{
 				labels = codeInstruction.labels
 			};
@@ -39,14 +37,14 @@ namespace Harmony
 			}
 			return result;
 		}
-		internal static Harmony20.HarmonyLib.ExceptionBlock ToHarmony20(this Harmony.ILCopying.ExceptionBlock block)
+		internal static HarmonyLib.ExceptionBlock ToHarmony20(this Harmony.ILCopying.ExceptionBlock block)
 		{
-			var blockType = (Harmony20.HarmonyLib.ExceptionBlockType)block.blockType;
-			return new Harmony20.HarmonyLib.ExceptionBlock(blockType, block.catchType);
+			var blockType = (HarmonyLib.ExceptionBlockType)block.blockType;
+			return new HarmonyLib.ExceptionBlock(blockType, block.catchType);
 		}
-		internal static Harmony20.HarmonyLib.HarmonyPatchType ToHarmony20(this HarmonyPatchType type)
+		internal static HarmonyLib.HarmonyPatchType ToHarmony20(this HarmonyPatchType type)
 		{
-			return (Harmony20.HarmonyLib.HarmonyPatchType)type;
+			return (HarmonyLib.HarmonyPatchType)type;
 		}
 	}
 }

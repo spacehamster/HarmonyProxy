@@ -10,7 +10,7 @@
 		<Company>Andreas Pardeike</Company>
 		<Copyright>Copyright © 2016</Copyright>
 		<Description>A general non-destructive patch library for .NET and Mono modules</Description>
-		<PackageId>Lib.Harmony</PackageId>
+		<PackageId>Lib.HarmonyProxy</PackageId>
 		<Authors>Andreas Pardeike</Authors>
 		<AssemblyName>0Harmony-1.2</AssemblyName>
 		<SignAssembly>false</SignAssembly>
@@ -39,10 +39,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Reference Include="0Harmony">
-	    <HintPath>..\Libs\0Harmony.dll</HintPath>
-	    <Aliases>Harmony20</Aliases>
-	  </Reference>
+	  <PackageReference Include="Lib.Harmony" Version="2.0.0.10" />
 	</ItemGroup>
-
 </Project>
