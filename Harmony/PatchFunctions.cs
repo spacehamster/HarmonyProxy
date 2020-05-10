@@ -80,20 +80,7 @@ namespace Harmony
 
 		public static DynamicMethod UpdateWrapper(MethodBase original, PatchInfo patchInfo, string instanceID)
 		{
-			var sortedPrefixes = GetSortedPatchMethods(original, patchInfo.prefixes);
-			var sortedPostfixes = GetSortedPatchMethods(original, patchInfo.postfixes);
-			var sortedTranspilers = GetSortedPatchMethods(original, patchInfo.transpilers);
-
-			var replacement = MethodPatcher.CreatePatchedMethod(original, instanceID, sortedPrefixes, sortedPostfixes, sortedTranspilers);
-			if (replacement == null) throw new MissingMethodException("Cannot create dynamic replacement for " + original.FullDescription());
-
-			var errorString = Memory.DetourMethod(original, replacement);
-			if (errorString != null)
-				throw new FormatException("Method " + original.FullDescription() + " cannot be patched. Reason: " + errorString);
-
-			PatchTools.RememberObject(original, replacement); // no gc for new value + release old value to gc
-
-			return replacement;
+			throw new NotImplementedException("PatchFunctions.UpdateWrapper not supported");
 		}
 	}
 }
