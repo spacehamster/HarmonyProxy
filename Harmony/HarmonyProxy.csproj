@@ -41,4 +41,8 @@
 	<ItemGroup>
 	  <PackageReference Include="Lib.Harmony" Version="2.0.1" />
 	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="$(SolutionDir)AssemblyRenamer\bin\$(Configuration)\AssemblyRenamer.exe -f Harmony -r Harmony12 -a 0Harmony12 -p $(OutDir)0Harmony-1.2.dll" />
+	</Target>
 </Project>

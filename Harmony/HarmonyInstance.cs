@@ -157,7 +157,7 @@ namespace Harmony
 
 		public IEnumerable<MethodBase> GetPatchedMethods()
 		{
-			return instance.GetPatchedMethods();
+			return HarmonyLib.Harmony.GetAllPatchedMethods();
 		}
 
 

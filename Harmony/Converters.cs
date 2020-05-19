@@ -6,10 +6,10 @@ namespace Harmony
 	{
 		internal static Patches ToHarmony12(this HarmonyLib.Patches patches)
 		{
-			var postfixes = patches.Postfixes.Select(p => p.ToHarmony12());
 			var prefixes = patches.Prefixes.Select(p => p.ToHarmony12());
+			var postfixes = patches.Postfixes.Select(p => p.ToHarmony12());
 			var transpilers = patches.Transpilers.Select(p => p.ToHarmony12());
-			return new Patches(postfixes.ToArray(), prefixes.ToArray(), transpilers.ToArray());
+			return new Patches(prefixes.ToArray(), postfixes.ToArray(), transpilers.ToArray());
 		}
 		internal static Patch ToHarmony12(this HarmonyLib.Patch patch)
 		{
